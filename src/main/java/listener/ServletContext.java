@@ -14,13 +14,13 @@ import javax.servlet.ServletContextListener;
 public class ServletContext implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println("Start");
+        System.out.println("Start system");
         UserDao userDao = new UserDao();
         servletContextEvent.getServletContext().setAttribute(ApplicationConstants.USERS, userDao);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println("Stop");
+        System.out.println("Stop system");
     }
 }
