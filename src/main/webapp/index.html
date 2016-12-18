@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
+    <meta login="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
 <body>
-<div class="login" >
+<div class="login">
     <form action="auth" method="post">
-        <input name="login" type="text" placeholder="login"/><br>
-        <input name="password" type="text" placeholder="password"/><br>
+        <input name="login" type="text" placeholder="login" pattern="\w{4,20}"/><br>
+        <input name="password" type="password" placeholder="password" pattern="\w{8,20}"/><br>
         <input name="submit" type="submit">
     </form>
-    <a href="registration.html">Registration</a>
+    <a href="registration.jsp">Registration</a>
 </div>
 </body>
 </html>

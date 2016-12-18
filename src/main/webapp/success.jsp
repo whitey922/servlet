@@ -9,6 +9,6 @@
 </head>
 <body>
 
-<h1>Correct!</h1>
+<h1>Hello ${user.login}! You have been successful authorized!</h1>
 </body>
 </html>

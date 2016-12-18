@@ -1,7 +1,7 @@
 package listener;
 
+import DAO.UserDao;
 import constans.ApplicationConstants;
-import domain.User;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -15,8 +15,8 @@ public class ServletContext implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         System.out.println("Start");
-        User userFirst = new User("login", "password", "email", "123", "name", "surname");
-        servletContextEvent.getServletContext().setAttribute(ApplicationConstants.USER, userFirst);
+        UserDao userDao = new UserDao();
+        servletContextEvent.getServletContext().setAttribute(ApplicationConstants.USERS, userDao);
     }
 
     @Override

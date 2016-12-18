@@ -1,7 +1,9 @@
 package controller;
 
+import DAO.UserDao;
+import bean.UserBean;
 import constans.ApplicationConstants;
-import domain.User;
+import validator.UserValidationAuth;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,11 +21,11 @@ import java.io.IOException;
 public class AuthServlet extends HttpServlet {
     private String login;
     private String password;
-    private User user;
+    private UserDao userDao;
 
     @Override
     public void init() throws ServletException {
-        user = (User) getServletContext().getAttribute(ApplicationConstants.USER);
+        userDao = (UserDao) getServletContext().getAttribute(ApplicationConstants.USERS);
     }
 
     @Override
@@ -31,13 +33,10 @@ public class AuthServlet extends HttpServlet {
         this.login = req.getParameter("login");
         this.password = req.getParameter("password");
 
-        if (isAuth(user))
-            getServletContext().getRequestDispatcher("/success.html").forward(req, resp);
-        else
+        if (UserValidationAuth.isUserAuth(userDao, login, password)) {
+            req.setAttribute("user", new UserBean(login));
+            getServletContext().getRequestDispatcher("/success.jsp").forward(req, resp);
+        } else
             getServletContext().getRequestDispatcher("/error.html").forward(req, resp);
-    }
-
-    private boolean isAuth(User user) {
-        return user.getLogin().equals(login) && user.getPassword().equals(password);
     }
 }

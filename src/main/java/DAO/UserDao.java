@@ -2,6 +2,7 @@ package DAO;
 
 import domain.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,9 +11,15 @@ import java.util.List;
  * Time: 3:59 PM
  */
 public class UserDao implements ICrudDAO {
+    private List<User> users = new ArrayList<>();
+
+    public UserDao() {
+        initUsers();
+    }
+
     @Override
     public void addUser(User user) {
-
+        users.add(user);
     }
 
     @Override
@@ -22,11 +29,18 @@ public class UserDao implements ICrudDAO {
 
     @Override
     public List<User> getUsers() {
-        return null;
+        return users;
     }
 
     @Override
     public void updateUser() {
 
+    }
+
+    private void initUsers() {
+        users.add(new User("login", "password", "email",
+                "123", "name", "surname"));
+        users.add(new User("log", "pass", "email",
+                "123", "name", "surname"));
     }
 }

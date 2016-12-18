@@ -6,5 +6,5 @@ package constans;
  * Time: 2:58 PM
  */
 public class ApplicationConstants {
-    public static final String USER = "USER";
+    public static final String USERS = "USER";
 }

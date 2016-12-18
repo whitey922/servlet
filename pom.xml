@@ -8,8 +8,6 @@
     <artifactId>Servlet_Core_QA</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-
-    <name>Calculator Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
