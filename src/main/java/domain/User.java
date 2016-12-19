@@ -6,6 +6,7 @@ package domain;
  * Time: 10:36 AM
  */
 public class User {
+    private String id;
     private String login;
     private String password;
     private String email;
@@ -23,6 +24,16 @@ public class User {
      * @param surname user's surname
      */
     public User(String login, String password, String email, String phone, String name, String surname) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public User(String id, String login, String password, String email, String phone, String name, String surname) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;

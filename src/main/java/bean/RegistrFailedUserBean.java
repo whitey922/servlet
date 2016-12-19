@@ -16,7 +16,8 @@ public class RegistrFailedUserBean extends User {
      * @param name user's name
      * @param surname user's surname
      */
-    public RegistrFailedUserBean(String login, String password, String email, String phone, String name, String surname) {
+    public RegistrFailedUserBean(String login, String password, String email,
+                                 String phone, String name, String surname) {
         super(login, password, email, phone, name, surname);
     }
 }

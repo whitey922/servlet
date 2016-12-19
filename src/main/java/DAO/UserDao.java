@@ -1,9 +1,17 @@
 package DAO;
 
+import DAO.queries.MySqlQueries;
 import domain.User;
+import exception.EmptyUsersInDatabaseException;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * User:Anton_Iehorov
@@ -11,15 +19,30 @@ import java.util.List;
  * Time: 3:59 PM
  */
 public class UserDao implements ICrudDAO {
-    private List<User> users = new ArrayList<>();
+    private DataSource dataSource;
 
-    public UserDao() {
-        initUsers();
+    public UserDao(DataSource dataSource) {
+        this.dataSource = Objects.requireNonNull(dataSource);
     }
 
     @Override
     public void addUser(User user) {
-        users.add(user);
+        StringBuilder mysqlQueryToAddUsers = new StringBuilder();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.ADD_USERS);
+            pstmt.setString(1, user.getLogin());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getName());
+            pstmt.setString(5, user.getSurname());
+            pstmt.setString(6, user.getPhone());
+            pstmt.execute();
+            System.out.println(MySqlQueries.ADD_USERS + mysqlQueryToAddUsers);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
@@ -29,18 +52,30 @@ public class UserDao implements ICrudDAO {
 
     @Override
     public List<User> getUsers() {
-        return users;
+        List<User> users = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.GET_USERS)) {
+            ResultSet resultSet = pstmt.executeQuery();
+            if (resultSet.next()) {
+                users.add(new User(resultSet.getString("id"),
+                        resultSet.getString("login"),
+                        resultSet.getString("password"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("name"),
+                        resultSet.getString("surname")
+                ));
+            }
+            return users;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        throw new EmptyUsersInDatabaseException("There is no users in the database!");
+
     }
 
     @Override
     public void updateUser() {
 
-    }
-
-    private void initUsers() {
-        users.add(new User("login", "password", "email",
-                "123", "name", "surname"));
-        users.add(new User("log", "pass", "email",
-                "123", "name", "surname"));
     }
 }
