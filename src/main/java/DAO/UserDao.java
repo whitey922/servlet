@@ -3,14 +3,10 @@ package DAO;
 import DAO.queries.MySqlQueries;
 import domain.User;
 import exception.EmptyUsersInDatabaseException;
+import service.exception.UserDidntAddedException;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 import java.util.Objects;
 
 /**
@@ -26,22 +22,24 @@ public class UserDao implements ICrudDAO {
     }
 
     @Override
-    public void addUser(User user) {
-        StringBuilder mysqlQueryToAddUsers = new StringBuilder();
+    public User addUser(User user) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.ADD_USERS);
+            PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.ADD_USERS, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, user.getLogin());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getEmail());
             pstmt.setString(4, user.getName());
             pstmt.setString(5, user.getSurname());
             pstmt.setString(6, user.getPhone());
-            pstmt.execute();
-            System.out.println(MySqlQueries.ADD_USERS + mysqlQueryToAddUsers);
-            pstmt.executeUpdate();
+            ResultSet resultSet = pstmt.getGeneratedKeys();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(1));
+            }
 
+            pstmt.executeUpdate();
+            return user;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+           throw new UserDidntAddedException("Added failed");
         }
     }
 
@@ -51,22 +49,26 @@ public class UserDao implements ICrudDAO {
     }
 
     @Override
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
+    public User getUser(String login, String password) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.GET_USERS)) {
+             PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.GET_USER)) {
+            pstmt.setString(1, login);
+            pstmt.setString(2, password);
             ResultSet resultSet = pstmt.executeQuery();
+            //TODO check if DB return more than 1 user
             if (resultSet.next()) {
-                users.add(new User(resultSet.getString("id"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        resultSet.getString("email"),
-                        resultSet.getString("phone"),
-                        resultSet.getString("name"),
-                        resultSet.getString("surname")
-                ));
+                User user = new User();
+                user.
+                        setId(resultSet.getInt("id")).
+                        setLogin(resultSet.getString("login")).
+                        setEmail(resultSet.getString("email")).
+                        setPassword(resultSet.getString("password")).
+                        setName(resultSet.getString("name")).
+                        setPhone(resultSet.getString("phone")).
+                        setSurname(resultSet.getString("surname"));
+
+                return user;
             }
-            return users;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }

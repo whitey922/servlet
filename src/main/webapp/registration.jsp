@@ -17,7 +17,7 @@
     <input id="password" name="password" type="password"  placeholder="password" pattern="\w{8,20}"/><br>
     <input id="repeat_password" name="" type="password" placeholder="repeat password" onblur="checkPasswords()"/><br>
     <input id="email" name="email" type="text" value="${user.email}" placeholder="email"/><br>
-    <input id="name" name="name" type="text" value="${user.name}" placeholder="login" pattern="\w{3,20}"/><br>
+    <input id="name" name="name" type="text" value="${user.name}" placeholder="name" pattern="\w{3,20}"/><br>
     <input id="surname" name="surname" type="text" value="${user.surname}" placeholder="surname"/><br>
     <input id="phone" name="phone" type="text" value="${user.phone}" placeholder="phone" pattern="^[+]{1}[\d]{12}"/><br>
     <input id="submit" name="submit" disabled type="submit">

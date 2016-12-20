@@ -1,7 +1,10 @@
 package listener;
 
+import DAO.ICrudDAO;
 import DAO.UserDao;
 import constans.ApplicationConstants;
+import service.IUserService;
+import service.UserService;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -20,9 +23,10 @@ public class ServletContext implements ServletContextListener {
         System.out.println("Start system");
         DataSource dataSource = null;
         try {
-            dataSource = (DataSource)new InitialContext().lookup("java:comp/env/jdbc/users");
-            servletContextEvent.getServletContext().setAttribute(ApplicationConstants.USERS,
-                    new UserDao((javax.sql.DataSource) dataSource));
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/users");
+            ICrudDAO iCrudDAO = new UserDao(dataSource);
+            IUserService iUserService = new UserService(iCrudDAO);
+            servletContextEvent.getServletContext().setAttribute(ApplicationConstants.USERS, iUserService);
         } catch (NamingException e) {
             e.printStackTrace();
         }

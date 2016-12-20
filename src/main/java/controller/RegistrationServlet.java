@@ -1,11 +1,12 @@
 package controller;
 
-import DAO.UserDao;
 import bean.ErrorMessage;
 import bean.RegistrFailedUserBean;
 import bean.UserBean;
 import constans.ApplicationConstants;
 import domain.User;
+import service.IUserService;
+import service.UserService;
 import validator.UserValidationRegistration;
 
 import javax.servlet.ServletException;
@@ -22,35 +23,45 @@ import java.io.IOException;
  */
 @WebServlet(urlPatterns = "/registration")
 public class RegistrationServlet extends HttpServlet {
-    private UserDao userDao;
-    private String login;
-    private String password;
-    private String email;
-    private String phone;
-    private String name;
-    private String surname;
+    private IUserService userDao;
 
     @Override
     public void init() throws ServletException {
-        userDao = (UserDao) getServletContext().getAttribute(ApplicationConstants.USERS);
+        userDao = (UserService) getServletContext().getAttribute(ApplicationConstants.USERS);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.login = req.getParameter("login");
-        this.password = req.getParameter("password");
-        this.email = req.getParameter("email");
-        this.phone = req.getParameter("phone");
-        this.name = req.getParameter("name");
-        this.surname = req.getParameter("surname");
+        //TODO set convectors
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        String email = req.getParameter("email");
+        String phone = req.getParameter("phone");
+        String name = req.getParameter("name");
+        String surname = req.getParameter("surname");
 
-        if (UserValidationRegistration.isLoginNotExist(userDao, login)) {
-            userDao.addUser(new User(login, password, email, phone, name, surname));
+        //TODO set validation
+        if (UserValidationRegistration.isLoginNotExist(login)) {
+            User user = new User();
+            user.
+                    setLogin(login).
+                    setEmail(email).
+                    setPassword(password).
+                    setName(name).
+                    setPhone(phone).
+                    setSurname(surname);
+            userDao.register(user);
             req.setAttribute("user", new UserBean(login));
             getServletContext().getRequestDispatcher("/success.jsp").forward(req, resp);
         } else {
             RegistrFailedUserBean registrFailedUserBean =
-                    new RegistrFailedUserBean(login, password, email, phone, name, surname);
+                    new RegistrFailedUserBean();
+            registrFailedUserBean.setLogin(login).
+                    setEmail(email).
+                    setPassword(password).
+                    setName(name).
+                    setPhone(phone).
+                    setSurname(surname);
             req.setAttribute("user", registrFailedUserBean);
             req.setAttribute("errorMessage", new ErrorMessage("Login '" + login + "' is already exist!"));
             getServletContext().getRequestDispatcher("/registration.jsp").forward(req, resp);

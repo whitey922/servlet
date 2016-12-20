@@ -1,9 +1,8 @@
 package controller;
 
-import DAO.UserDao;
-import bean.UserBean;
 import constans.ApplicationConstants;
-import validator.UserValidationAuth;
+import exception.EmptyUsersInDatabaseException;
+import service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,24 +18,28 @@ import java.io.IOException;
  */
 @WebServlet(urlPatterns = "/auth")
 public class AuthServlet extends HttpServlet {
-    private String login;
-    private String password;
-    private UserDao userDao;
+    //TODO remove variables
+    private UserService userDao;
 
     @Override
     public void init() throws ServletException {
-        userDao = (UserDao) getServletContext().getAttribute(ApplicationConstants.USERS);
+        userDao = (UserService) getServletContext().getAttribute(ApplicationConstants.USERS);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.login = req.getParameter("login");
-        this.password = req.getParameter("password");
 
-        if (UserValidationAuth.isUserAuth(userDao, login, password)) {
-            req.setAttribute("user", new UserBean(login));
+        //TODO add if user doesn't exist
+        try {
+
+            userDao.getUser(req.getParameter("login"), req.getParameter("password"));
             getServletContext().getRequestDispatcher("/success.jsp").forward(req, resp);
-        } else
+        }
+        catch (EmptyUsersInDatabaseException e) {
+            //TODO add error message and bean
+//            req.setAttribute("user", new UserBean(login));
             getServletContext().getRequestDispatcher("/error.html").forward(req, resp);
+        }
     }
+
 }

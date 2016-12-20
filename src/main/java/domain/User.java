@@ -6,7 +6,7 @@ package domain;
  * Time: 10:36 AM
  */
 public class User {
-    private String id;
+    private int id;
     private String login;
     private String password;
     private String email;
@@ -14,32 +14,13 @@ public class User {
     private String name;
     private String surname;
 
-    /***
-     *
-     * @param login user's login
-     * @param password user's password
-     * @param email user's email
-     * @param phone user's phone
-     * @param name user's name
-     * @param surname user's surname
-     */
-    public User(String login, String password, String email, String phone, String name, String surname) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.name = name;
-        this.surname = surname;
+    public int getId() {
+        return id;
     }
 
-    public User(String id, String login, String password, String email, String phone, String name, String surname) {
+    public User setId(int id) {
         this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.name = name;
-        this.surname = surname;
+        return this;
     }
 
     /***
@@ -50,12 +31,22 @@ public class User {
         return login;
     }
 
+    public User setLogin(String login) {
+        this.login = login;
+        return this;
+    }
+
     /***
      *
      * @return user's password
      */
     public String getPassword() {
         return password;
+    }
+
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     /***
@@ -66,12 +57,22 @@ public class User {
         return email;
     }
 
+    public User setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
     /***
      *
      * @return user's phone
      */
     public String getPhone() {
         return phone;
+    }
+
+    public User setPhone(String phone) {
+        this.phone = phone;
+        return this;
     }
 
     /***
@@ -82,12 +83,22 @@ public class User {
         return name;
     }
 
+    public User setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /***
      *
      * @return user's surname
      */
     public String getSurname() {
         return surname;
+    }
+
+    public User setSurname(String surname) {
+        this.surname = surname;
+        return this;
     }
 
 
