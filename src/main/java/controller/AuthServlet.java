@@ -31,7 +31,6 @@ public class AuthServlet extends HttpServlet {
 
         //TODO add if user doesn't exist
         try {
-
             userDao.getUser(req.getParameter("login"), req.getParameter("password"));
             getServletContext().getRequestDispatcher("/success.jsp").forward(req, resp);
         }

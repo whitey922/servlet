@@ -29,9 +29,7 @@ public class UserService implements IUserService {
 
     @Override
     public boolean exist(String login) {
-
-        //TODO rewrite it
-        return true;
+        return iCrudDAO.getUser(login);
     }
 
 

@@ -47,6 +47,17 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>6.0.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.10</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>Servlet_Core_QA</finalName>

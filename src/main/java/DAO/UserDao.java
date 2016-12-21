@@ -51,7 +51,7 @@ public class UserDao implements ICrudDAO {
     @Override
     public User getUser(String login, String password) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.GET_USER)) {
+             PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.GET_USER_WITH_PASSWORD)) {
             pstmt.setString(1, login);
             pstmt.setString(2, password);
             ResultSet resultSet = pstmt.executeQuery();
@@ -72,8 +72,24 @@ public class UserDao implements ICrudDAO {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
-        throw new EmptyUsersInDatabaseException("There is no users in the database!");
+        throw new EmptyUsersInDatabaseException("There is no such user in the database!");
 
+    }
+
+    @Override
+    public boolean getUser(String login) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.GET_USER_WITHOUT_PASSWORD)) {
+            pstmt.setString(1, login);
+            ResultSet resultSet = pstmt.executeQuery();
+            //TODO check if DB return more than 1 user
+            if (resultSet.next()) {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return true;
     }
 
     @Override

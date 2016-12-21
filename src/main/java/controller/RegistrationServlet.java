@@ -7,7 +7,6 @@ import constans.ApplicationConstants;
 import domain.User;
 import service.IUserService;
 import service.UserService;
-import validator.UserValidationRegistration;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,8 +39,8 @@ public class RegistrationServlet extends HttpServlet {
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
 
-        //TODO set validation
-        if (UserValidationRegistration.isLoginNotExist(login)) {
+
+        if (userDao.exist(login)) {
             User user = new User();
             user.
                     setLogin(login).
@@ -53,6 +52,7 @@ public class RegistrationServlet extends HttpServlet {
             userDao.register(user);
             req.setAttribute("user", new UserBean(login));
             getServletContext().getRequestDispatcher("/success.jsp").forward(req, resp);
+
         } else {
             RegistrFailedUserBean registrFailedUserBean =
                     new RegistrFailedUserBean();
@@ -64,6 +64,7 @@ public class RegistrationServlet extends HttpServlet {
                     setSurname(surname);
             req.setAttribute("user", registrFailedUserBean);
             req.setAttribute("errorMessage", new ErrorMessage("Login '" + login + "' is already exist!"));
+//            resp.sendRedirect("/registration.jsp");
             getServletContext().getRequestDispatcher("/registration.jsp").forward(req, resp);
         }
     }

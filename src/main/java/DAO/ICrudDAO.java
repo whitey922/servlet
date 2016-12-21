@@ -13,6 +13,7 @@ public interface ICrudDAO {
     void removeUser(int id);
 
     User getUser(String login, String password);
+    boolean getUser(String login);
 
     void updateUser();
 }

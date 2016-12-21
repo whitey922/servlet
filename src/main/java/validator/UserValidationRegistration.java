@@ -6,11 +6,6 @@ package validator;
  * Time: 13:40
  */
 public class UserValidationRegistration {
-    public static boolean isLoginNotExist(/*UserDao userDao, */String login) {
-//        for (User user: userDao.getUsers()) {
-//            if(user.getLogin().equals(login)) return false;
-//        }
-//        return true;
-        return true;
-    }
+
+
 }

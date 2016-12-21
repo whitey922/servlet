@@ -6,7 +6,5 @@ package validator;
  * Time: 13:35
  */
 public class UserValidationAuth {
-    public static boolean isUserAuth(String login, String password) {
-        return true;
-    }
+
 }
