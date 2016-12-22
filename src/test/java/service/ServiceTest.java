@@ -2,7 +2,6 @@ package service;
 
 import DAO.UserDao;
 import domain.User;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -25,10 +24,36 @@ public class ServiceTest {
     }
 
     @Test
-    public void checkUserExist() {
+    public void addUser() {
         user = new User();
         user.setLogin("login");
         user.setPassword("password");
+//        verify(userDao.getUser("login", "password").e
         when(userService.getUser("login", "password")).thenReturn(user);
+    }
+
+    @Test
+    public void existUser() {
+        user = new User();
+        user.setLogin("login");
+        user.setPassword("password");
+        when(userService.exist("login")).thenReturn(true);
+    }
+
+    @Test
+    public void noExistUser() {
+        user = new User();
+        user.setLogin("logidgfn");
+        user.setPassword("password");
+        when(userService.exist("login")).thenReturn(false);
+    }
+
+    @Test
+    public void register() {
+        user = new User();
+        user.setLogin("login");
+        user.setPassword("password");
+
+        when(userService.register(user)).thenReturn(user);
     }
 }

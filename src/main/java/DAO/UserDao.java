@@ -24,7 +24,8 @@ public class UserDao implements ICrudDAO {
     @Override
     public User addUser(User user) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.ADD_USERS, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = connection.prepareStatement(MySqlQueries.ADD_USERS,
+                    Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, user.getLogin());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getEmail());

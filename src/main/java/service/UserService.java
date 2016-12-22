@@ -32,5 +32,4 @@ public class UserService implements IUserService {
         return iCrudDAO.getUser(login);
     }
 
-
 }
