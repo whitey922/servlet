@@ -28,7 +28,6 @@ public class ServiceTest {
         user = new User();
         user.setLogin("login");
         user.setPassword("password");
-//        verify(userDao.getUser("login", "password").e
         when(userService.getUser("login", "password")).thenReturn(user);
     }
 

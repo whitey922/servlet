@@ -2,9 +2,9 @@
     <Resource name="jdbc/users"
               auth="Container"
               type="javax.sql.DataSource"
-              username="root"
-              driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/users?useUnicode=true&amp;characterEncoding=utf8"
+              username="admin"
+              driverClassName="org.h2.Driver"
+              url="jdbc:h2:tcp://localhost/~/test"
               maxActive="15"
               maxIdle="3"
               maxWait="5000"
@@ -20,4 +20,5 @@
               testOnBorrow="true"
               testOnReturn="false"
     />
+
 </Context>
